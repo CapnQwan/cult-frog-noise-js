@@ -1,0 +1,67 @@
+import type { Noise2D } from './_types/noise2d.js';
+
+const HEADER_LENGTH = 2;
+
+function validateBounds(noise: Noise2D, x: number, y: number): void {
+  const [width, height] = noise;
+  if (!(Number.isInteger(x) && Number.isInteger(y))) throw new Error('Invalid x or y');
+  if (x < 0 || x >= width || y < 0 || y >= height) throw new Error('Invalid bounds');
+}
+
+function getIndex(noise: Noise2D, x: number, y: number): number {
+  /** @todo - should validation have an opt out? */
+  validateBounds(noise, x, y);
+  const [, height] = noise;
+  return y * height + x + HEADER_LENGTH;
+}
+
+export function create(width: number, height: number): Noise2D {
+  const noise = new Float32Array(width * height + HEADER_LENGTH) as Noise2D;
+  noise[0] = width;
+  noise[1] = height;
+  return noise;
+}
+
+export function getWidth(noise: Noise2D): number {
+  return noise[0];
+}
+
+export function getHeight(noise: Noise2D): number {
+  return noise[1];
+}
+
+export function set(noise: Noise2D, x: number, y: number, value: number): void {
+  noise[getIndex(noise, x, y)] = value;
+}
+
+export function get(noise: Noise2D, x: number, y: number): number {
+  return noise[getIndex(noise, x, y)] as number;
+}
+
+export function forEach(
+  noise: Noise2D,
+  callback: (value: number, x: number, y: number) => void
+): void {
+  const [width, height] = noise;
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      callback(get(noise, x, y), x, y);
+    }
+  }
+}
+
+export function toPixelBuffer(noise: Noise2D): Uint8Array {
+  const [width, height] = noise;
+  const pixelBuffer = new Uint8Array(width * height * 4);
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const index = (y * width + x) * 4;
+      const value = get(noise, x, y);
+      pixelBuffer[index] = value * 255;
+      pixelBuffer[index + 1] = value * 255;
+      pixelBuffer[index + 2] = value * 255;
+      pixelBuffer[index + 3] = 255;
+    }
+  }
+  return pixelBuffer;
+}
