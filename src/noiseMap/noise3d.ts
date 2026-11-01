@@ -13,9 +13,9 @@ function validateBounds(noise: Noise3D, x: number, y: number, z: number): void {
 function getIndex(noise: Noise3D, x: number, y: number, z: number): number {
   /** @todo - should validation have an opt out? */
   validateBounds(noise, x, y, z);
-  const [, height, depth] = noise;
+  const [width, height] = noise;
   // +3 skips the [width, height, depth] header
-  return (z * depth + y) * height + x + HEADER_LENGTH;
+  return (z * height + y) * width + x + HEADER_LENGTH;
 }
 
 export function create(width: number, height: number, depth: number): Noise3D {

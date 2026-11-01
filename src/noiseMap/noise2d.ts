@@ -11,8 +11,8 @@ function validateBounds(noise: Noise2D, x: number, y: number): void {
 function getIndex(noise: Noise2D, x: number, y: number): number {
   /** @todo - should validation have an opt out? */
   validateBounds(noise, x, y);
-  const [, height] = noise;
-  return y * height + x + HEADER_LENGTH;
+  const [width] = noise;
+  return y * width + x + HEADER_LENGTH;
 }
 
 export function create(width: number, height: number): Noise2D {
