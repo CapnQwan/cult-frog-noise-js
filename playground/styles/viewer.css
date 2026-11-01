@@ -1,0 +1,54 @@
+.viewer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.canvas-wrap {
+  overflow: auto;
+  max-height: 75vh;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background:
+    repeating-conic-gradient(var(--checker-a) 0 25%, var(--checker-b) 0 50%) 0 0 / 16px 16px;
+  padding: 12px;
+}
+
+#canvas {
+  display: block;
+  margin: 0 auto;
+  image-rendering: pixelated;
+  cursor: crosshair;
+}
+
+.layer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.layer input[type="range"] {
+  flex: 1;
+}
+
+#play {
+  width: 36px;
+  flex: none;
+}
+
+.readout {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.error {
+  background: var(--warn-bg);
+  color: var(--warn);
+  border: 1px solid var(--warn);
+  border-radius: 8px;
+  padding: 8px 12px;
+  white-space: pre-wrap;
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: 12px;
+}

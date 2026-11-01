@@ -47,6 +47,8 @@
     "test": "vitest run",
     "test:watch": "vitest watch",
     "test:coverage": "vitest run --coverage",
+    "playground": "vite playground",
+    "playground:typecheck": "tsc -p playground --noEmit",
     "check": "biome check . --error-on-warnings",
     "check:ci": "biome ci . --error-on-warnings",
     "fix": "biome check . --write",
@@ -67,6 +69,11 @@
     "lint-staged": "^17.5.1",
     "rimraf": "^6.1.3",
     "typescript": "^7.0.2",
+    "vite": "^8.3.4",
     "vitest": "^5.0.0"
+  },
+  "dependencies": {
+    "@cult-frog/random": "^0.1.0",
+    "@cult-frog/types": "^1.0.1"
   }
 }

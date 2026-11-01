@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Noise Playground</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>@cult-frog/noise <span>playground</span></h1>
+    </header>
+
+    <main>
+      <aside class="panel" id="controls">
+        <label class="field">
+          <span>Generator</span>
+          <select id="generator"></select>
+        </label>
+
+        <fieldset>
+          <legend>Size</legend>
+          <div class="grid">
+            <label class="field"><span>Width</span><input id="width" type="number" min="1" max="1024" step="1" /></label>
+            <label class="field"><span>Height</span><input id="height" type="number" min="1" max="1024" step="1" /></label>
+            <label class="field" id="depth-field"><span>Depth</span><input id="depth" type="number" min="1" max="256" step="1" /></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Options</legend>
+          <div class="grid" id="params"></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>View</legend>
+          <label class="field">
+            <span>Zoom</span>
+            <select id="zoom">
+              <option value="1">1×</option>
+              <option value="2">2×</option>
+              <option value="3">3×</option>
+              <option value="4">4×</option>
+              <option value="6">6×</option>
+              <option value="8">8×</option>
+            </select>
+          </label>
+          <label class="check"><input id="auto" type="checkbox" /> Regenerate on change</label>
+        </fieldset>
+
+        <button id="generate" type="button">Generate</button>
+      </aside>
+
+      <section class="viewer">
+        <div class="error" id="error" hidden></div>
+
+        <div class="canvas-wrap">
+          <canvas id="canvas"></canvas>
+        </div>
+
+        <div class="layer" id="layer-controls">
+          <button id="play" type="button" aria-label="Play layers">▶</button>
+          <input id="layer" type="range" min="0" value="0" step="1" />
+          <span class="mono" id="layer-label">z 0 / 0</span>
+          <label class="field inline"><span>fps</span><input id="fps" type="number" min="1" max="60" step="1" /></label>
+        </div>
+
+        <div class="readout mono" id="readout">Hover the image to inspect values</div>
+      </section>
+
+      <aside class="panel" id="stats">
+        <h2>Stats</h2>
+        <table>
+          <thead>
+            <tr><th></th><th id="stats-col-a">Map</th><th id="stats-col-b">Volume</th></tr>
+          </thead>
+          <tbody id="stats-body"></tbody>
+        </table>
+        <h3>Histogram <small id="histogram-scope">[0, 1)</small></h3>
+        <canvas id="histogram" width="320" height="120"></canvas>
+        <p class="legend">
+          <span class="swatch out"></span> values outside [0, 1) at each edge
+        </p>
+        <h3>Timing</h3>
+        <table><tbody id="timing-body"></tbody></table>
+      </aside>
+    </main>
+
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>
