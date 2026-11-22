@@ -28,4 +28,16 @@ describe('Noise2D', () => {
     expect(noise[1]).toBe(10);
     Noise2D.forEach(noise, (value, x, y) => expect(value).toBe(y * 5 + x));
   });
+
+  it('should expose the cells row-major without the header', () => {
+    const noise = Noise2D.create(5, 10);
+    const values = Noise2D.getValues(noise);
+    expect(values.length).toBe(5 * 10);
+
+    values[3 * 5 + 2] = 0.25;
+    expect(Noise2D.get(noise, 2, 3)).toBe(0.25);
+
+    Noise2D.set(noise, 4, 9, 0.75);
+    expect(values[9 * 5 + 4]).toBe(0.75);
+  });
 });

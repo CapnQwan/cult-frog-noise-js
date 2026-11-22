@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@cult-frog/math':
+        specifier: ^0.1.0
+        version: 0.1.0
       '@cult-frog/random':
         specifier: ^0.1.0
         version: 0.1.0
@@ -101,6 +104,10 @@ packages:
     engines: {node: '>=14.21.3'}
     cpu: [x64]
     os: [win32]
+
+  '@cult-frog/math@0.1.0':
+    resolution: {integrity: sha512-t+GDFNUGYzvcyMIEcLE5zAxiAEqddYEpdRXhhHhAVSG74pf42kUIYe0UJqdCZeAx6JwDKxM48EMVUzC10vuCAQ==}
+    engines: {node: '>=20.19'}
 
   '@cult-frog/random@0.1.0':
     resolution: {integrity: sha512-Cis139HmsR0hiVJk025Ax5E3gnDSPc8S6sLj7TD1VdWzUi1cbBARRMfGH+0Z6sC87SmlhlJl2gPaTil9kANuWQ==}
@@ -719,6 +726,10 @@ snapshots:
 
   '@biomejs/cli-win32-x64@2.5.15':
     optional: true
+
+  '@cult-frog/math@0.1.0':
+    dependencies:
+      '@cult-frog/types': 1.0.1
 
   '@cult-frog/random@0.1.0': {}
 

@@ -30,6 +30,17 @@ export function getHeight(noise: Noise2D): number {
   return noise[1];
 }
 
+/**
+ * The map's cells as a row-major view over the same buffer, without the header:
+ * cell (x, y) is at `y * width + x`. Writes through it change the map, and it
+ * stays valid as long as the map does. There are no bounds checks, unlike
+ * `get`/`set`, so it suits whole-map passes whose loops already stay in range.
+ * Each call allocates a small view object, so take it once per pass, not per cell.
+ */
+export function getValues(noise: Noise2D): Float32Array {
+  return noise.subarray(HEADER_LENGTH);
+}
+
 export function set(noise: Noise2D, x: number, y: number, value: number): void {
   noise[getIndex(noise, x, y)] = value;
 }
