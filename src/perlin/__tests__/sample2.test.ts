@@ -21,7 +21,7 @@ function sampleRange(count: number, noiseSeed: number): [number, number] {
   return [min, max];
 }
 
-describe('perlin/hash', () => {
+describe('perlin/sample2', () => {
   describe('corner2', () => {
     it('should return the dot product with one of the eight gradients', () => {
       for (let y = 0; y < 32; y++) {

@@ -9,16 +9,13 @@ export function create(
   height: number,
   options: Partial<Noise2dOptions> = {}
 ): Noise2D {
-  if (!(Number.isInteger(width) && Number.isInteger(height)))
-    throw new Error('Invalid width or height');
-  if (width <= 0 || height <= 0) throw new Error('Invalid width or height');
+  const noise = Noise2D.create(width, height);
 
   const config = { ...DEFAULT_NOISE_2D_OPTIONS, ...options };
 
   if (!(Number.isInteger(config.offsetX) && Number.isInteger(config.offsetY)))
-    throw new Error('Invalid offsetX or offsetY');
+    throw new RangeError('Invalid offsetX or offsetY');
 
-  const noise = Noise2D.create(width, height);
   const seed = config.seed;
 
   for (let y = 0; y < height; y++) {

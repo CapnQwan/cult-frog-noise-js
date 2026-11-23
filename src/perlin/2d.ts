@@ -2,6 +2,7 @@ import { Random } from '@cult-frog/random';
 
 import { Noise2D } from '../noiseMap/index.js';
 import { DEFAULT_PERLIN_2D_OPTIONS } from './defaultOptions.js';
+import { validateOptions2 } from './options.js';
 import { sample2 } from './sample2.js';
 
 import type { Perlin2dOptions } from './_types/options.js';
@@ -92,23 +93,11 @@ export function create(
   height: number,
   options: Partial<Perlin2dOptions> = {}
 ): Noise2D {
-  if (!(Number.isInteger(width) && Number.isInteger(height)))
-    throw new Error('Invalid width or height');
-  if (width <= 0 || height <= 0) throw new Error('Invalid width or height');
+  const noise = Noise2D.create(width, height);
 
   const config = { ...DEFAULT_PERLIN_2D_OPTIONS, ...options };
+  validateOptions2(config);
 
-  if (!Number.isInteger(config.seed)) throw new Error('Invalid seed');
-  if (!(Number.isInteger(config.offsetX) && Number.isInteger(config.offsetY)))
-    throw new Error('Invalid offsetX or offsetY');
-  if (!(Number.isInteger(config.octaves) && config.octaves >= 1))
-    throw new Error('Invalid octaves');
-  if (!(Number.isFinite(config.lacunarity) && config.lacunarity > 0))
-    throw new Error('Invalid lacunarity');
-  if (!(config.persistence >= 0 && config.persistence <= 1)) throw new Error('Invalid persistence');
-  if (!(Number.isFinite(config.scale) && config.scale > 0)) throw new Error('Invalid scale');
-
-  const noise = Noise2D.create(width, height);
   const values = Noise2D.getValues(noise);
   const invScale = 1 / config.scale;
 

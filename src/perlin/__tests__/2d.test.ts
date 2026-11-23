@@ -99,6 +99,17 @@ describe('perlin/2d', () => {
       expect(region(wide, 0, 0, 48, 40)).toEqual(region(square, 16, 8, 48, 40));
     });
 
+    it.each<Partial<Perlin2dOptions>>([
+      { octaves: 32 },
+      { octaves: 32, persistence: 1, lacunarity: 1e9 },
+      { octaves: 32, lacunarity: 0.1, scale: 1e-6 },
+      { offsetX: Number.MAX_SAFE_INTEGER - 8, offsetY: Number.MIN_SAFE_INTEGER },
+    ])('should keep every value within [0, 1] at the accepted extreme %o', (options) => {
+      const [min, max] = range(Perlin2D.create(8, 8, options));
+      expect(min).toBeGreaterThanOrEqual(0);
+      expect(max).toBeLessThanOrEqual(1);
+    });
+
     it('should produce a value within [0, 1] for a 1×1 map', () => {
       const value = Noise2D.get(Perlin2D.create(1, 1), 0, 0);
       expect(value).toBeGreaterThanOrEqual(0);
@@ -128,29 +139,8 @@ describe('perlin/2d', () => {
       expect(() => Perlin2D.create(width, height)).toThrow('Invalid width or height');
     });
 
-    it.each<[Partial<Perlin2dOptions>, string]>([
-      [{ seed: 1.5 }, 'Invalid seed'],
-      [{ seed: Number.NaN }, 'Invalid seed'],
-      [{ offsetX: 0.5 }, 'Invalid offsetX or offsetY'],
-      [{ offsetY: 0.5 }, 'Invalid offsetX or offsetY'],
-      [{ offsetX: Number.NaN }, 'Invalid offsetX or offsetY'],
-      [{ octaves: 0 }, 'Invalid octaves'],
-      [{ octaves: 2.5 }, 'Invalid octaves'],
-      [{ octaves: Number.NaN }, 'Invalid octaves'],
-      [{ octaves: Number.POSITIVE_INFINITY }, 'Invalid octaves'],
-      [{ lacunarity: 0 }, 'Invalid lacunarity'],
-      [{ lacunarity: -1 }, 'Invalid lacunarity'],
-      [{ lacunarity: Number.NaN }, 'Invalid lacunarity'],
-      [{ lacunarity: Number.POSITIVE_INFINITY }, 'Invalid lacunarity'],
-      [{ persistence: -0.1 }, 'Invalid persistence'],
-      [{ persistence: 1.1 }, 'Invalid persistence'],
-      [{ persistence: Number.NaN }, 'Invalid persistence'],
-      [{ scale: 0 }, 'Invalid scale'],
-      [{ scale: -1 }, 'Invalid scale'],
-      [{ scale: Number.NaN }, 'Invalid scale'],
-      [{ scale: Number.POSITIVE_INFINITY }, 'Invalid scale'],
-    ])('should throw for invalid options %o', (options, message) => {
-      expect(() => Perlin2D.create(8, 8, options)).toThrow(message);
+    it('should validate the options before sampling', () => {
+      expect(() => Perlin2D.create(8, 8, { octaves: 0 })).toThrow(RangeError);
     });
   });
 });

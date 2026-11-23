@@ -10,9 +10,7 @@ export function create(
   depth: number,
   options: Partial<Noise3dOptions> = {}
 ): Noise3D {
-  if (!(Number.isInteger(width) && Number.isInteger(height) && Number.isInteger(depth)))
-    throw new Error('Invalid width, height, or depth');
-  if (width <= 0 || height <= 0 || depth <= 0) throw new Error('Invalid width, height, or depth');
+  const noise = Noise3D.create(width, height, depth);
 
   const config = { ...DEFAULT_NOISE_3D_OPTIONS, ...options };
 
@@ -23,9 +21,8 @@ export function create(
       Number.isInteger(config.offsetZ)
     )
   )
-    throw new Error('Invalid offsetX or offsetY');
+    throw new RangeError('Invalid offsetX or offsetY');
 
-  const noise = Noise3D.create(width, height, depth);
   const seed = config.seed;
 
   for (let y = 0; y < height; y++) {

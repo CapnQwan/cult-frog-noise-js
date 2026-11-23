@@ -51,4 +51,16 @@ describe('Noise3D', () => {
     expect(() => Noise3D.get(noise, 3, NaN, 4)).toThrow('Invalid x, y, or z');
     expect(() => Noise3D.get(noise, Infinity, 5, 4)).toThrow('Invalid x, y, or z');
   });
+
+  it('should expose the cells x fastest, then y, then z, without the header', () => {
+    const noise = Noise3D.create(5, 10, 20);
+    const values = Noise3D.getValues(noise);
+    expect(values.length).toBe(5 * 10 * 20);
+
+    values[(4 * 10 + 3) * 5 + 2] = 0.25;
+    expect(Noise3D.get(noise, 2, 3, 4)).toBe(0.25);
+
+    Noise3D.set(noise, 4, 9, 19, 0.75);
+    expect(values[(19 * 10 + 9) * 5 + 4]).toBe(0.75);
+  });
 });

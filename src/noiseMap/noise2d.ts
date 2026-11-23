@@ -4,8 +4,8 @@ const HEADER_LENGTH = 2;
 
 function validateBounds(noise: Noise2D, x: number, y: number): void {
   const [width, height] = noise;
-  if (!(Number.isInteger(x) && Number.isInteger(y))) throw new Error('Invalid x or y');
-  if (x < 0 || x >= width || y < 0 || y >= height) throw new Error('Invalid bounds');
+  if (!(Number.isInteger(x) && Number.isInteger(y))) throw new RangeError('Invalid x or y');
+  if (x < 0 || x >= width || y < 0 || y >= height) throw new RangeError('Invalid bounds');
 }
 
 function getIndex(noise: Noise2D, x: number, y: number): number {
@@ -16,6 +16,10 @@ function getIndex(noise: Noise2D, x: number, y: number): number {
 }
 
 export function create(width: number, height: number): Noise2D {
+  if (!(Number.isInteger(width) && Number.isInteger(height)))
+    throw new RangeError('Invalid width or height');
+  if (width <= 0 || height <= 0) throw new RangeError('Invalid width or height');
+
   const noise = new Float32Array(width * height + HEADER_LENGTH) as Noise2D;
   noise[0] = width;
   noise[1] = height;
